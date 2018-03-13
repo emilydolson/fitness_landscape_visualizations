@@ -7,6 +7,60 @@
 	<script src="libraries/aframe-heatmap3d.js"></script>
 	<script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
 
+	<style>
+		body {
+			font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
+			line-height: 1.6;
+			font-weight: 400;
+			font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+		}
+		#buttonPanel {
+			width:250px;
+			position: absolute;
+			top: 20px;
+			left: 20px;
+		}
+		.button {
+			display: inline-block;
+			height: 38px;
+			padding: 0 30px;
+			color: #555;
+			text-align: center;
+			font-size: 11px;
+			font-weight: 600;
+			line-height: 38px;
+			letter-spacing: .1rem;
+			text-transform: uppercase;
+			text-decoration: none;
+			white-space: nowrap;
+			background-color: transparent;
+			border-radius: 4px;
+			border: 1px solid #bbb;
+			cursor: pointer;
+			box-sizing: border-box;
+			color: #FFF;
+			background-color: #33C3F0;
+			border-color: #33C3F0;
+			width: 100%;
+			margin-top:20px;
+		}
+		.button:focus {
+			color: #FFF;
+			background-color: #1EAEDB;
+			border-color: #1EAEDB;
+		}
+		</style>
+
+	<script type="text/javascript">
+		function handleClick(fun_num){
+			console.log('Switch to '+fun_num);
+			document.getElementById('middle').setAttribute('aframe-heatmap3d', {
+				src: '#fun' + fun_num});
+			d3.select('#basemapEl').transition().attr('src','#fun'+fun_num);
+			//document.getElementById('basemapEl').setAttribute('src', '#png'+region);
+		} // handleClick()
+	</script>
+
 </head>
 <body>
     <a-scene >
@@ -29,6 +83,9 @@
 		ignoreZeroValues:false; 
 		invertElevation:true;
 		palette:parula;
+		metalness:.5;
+		roughness:0;
+		stretch:true;
 		flipPalette:false; 
 		renderMode: surface;
 		scaleOpacity: false;
@@ -43,6 +100,8 @@
 			position="0 0 0"
 			material="visible:false">
 		</a-entity>
+
+		<a-entity daydream-controls></a-entity>
 
 		<!-- Default lighting injected by A-Frame. -		-->
 		<!-- <a-entity light="type: ambient; color: #fff"></a-entity> -->
@@ -68,6 +127,19 @@
 			maxDistance:10;">
 		</a-entity>
 	</a-scene>
+
+	<div id="buttonPanel">
+		<div class="button" style="top:0px; " onclick="handleClick('4')">Himmelblau</div>
+		<div class="button" style="top:150px;"  onclick="handleClick('5')">Six-Hump Camel Back</div>
+		<div class="button" style="top:280px;"  onclick="handleClick('6')">Shubert 2D</div>
+		<div class="button" style="top:430px;"  onclick="handleClick('7')">Vincent 2D</div>
+		<div class="button" style="top:430px;"  onclick="handleClick('10')">Modified Rastrigin</div>
+		<div class="button" style="top:580px;"  onclick="handleClick('11')">Composition Function 1</div>
+		<div class="button" style="top:730px;"  onclick="handleClick('12')">Composition Function 2</div>
+		<div class="button" style="top:880px;"  onclick="handleClick('13')">Composition Function 3</div>
+
+	</div>
+
 </body>
 
 </html>

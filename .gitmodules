@@ -1,0 +1,3 @@
+[submodule "aframe-heatmap3d"]
+	path = aframe-heatmap3d
+	url = git@github.com:morandd/aframe-heatmap3d.git

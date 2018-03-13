@@ -1,0 +1,73 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Fitness landscapes</title>
+	<script src="libraries/aframe.min.js"></script>
+    <script src="libraries/d3.js"></script>
+	<script src="libraries/aframe-heatmap3d.js"></script>
+	<script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
+
+</head>
+<body>
+    <a-scene >
+
+		<a-assets>
+			<img id="fun4" src="data/fun_4.jpg"  style="display:none"/>
+			<img id="fun5" src="data/fun_5.jpg"  style="display:none"/>
+			<img id="fun6" src="data/fun_6.jpg"  style="display:none"/>
+			<img id="fun7" src="data/fun_7.jpg"  style="display:none"/>
+			<img id="fun10" src="data/fun_10.jpg"  style="display:none"/>
+			<img id="fun11" src="data/fun_11.jpg"  style="display:none"/>
+			<img id="fun12" src="data/fun_12.jpg"  style="display:none"/>
+			<img id="fun13" src="data/fun_13.jpg"  style="display:none"/>
+		</a-assets>
+
+		<a-entity	
+		id="middle"
+		aframe-heatmap3d="
+		src: #fun12;
+		ignoreZeroValues:false; 
+		invertElevation:true;
+		palette:parula;
+		flipPalette:false; 
+		renderMode: surface;
+		scaleOpacity: false;
+		scaleOpacityMethod:log2;
+		opacityMin: 0.99; 
+		 width: 3; height: 3;" scale="1 1 1">
+		</a-entity>		
+
+		<a-entity
+			id="target"
+			geometry="primitive: box"
+			position="0 0 0"
+			material="visible:false">
+		</a-entity>
+
+		<!-- Default lighting injected by A-Frame. -		-->
+		<!-- <a-entity light="type: ambient; color: #fff"></a-entity> -->
+
+		<a-entity light="type: directional; target: middle; color: #FFF; intensity: 0.5" position="2 4 5"></a-entity>
+		<a-entity light="intensity: 2; distance: 1; angle: 90; target: middle; type:directional" position="5 5 3"></a-entity>
+
+		<a-entity
+			camera="active:true"
+			id="camera_orbit"
+			position="0 2 3"
+			look-controls
+			wasd-controls="fly:true"
+			orbit-controls="
+			autoRotate: false;
+			target: #target;
+			enableDamping: true;
+			dampingFactor: 0.125;
+			rotateSpeed:0.15;
+			zoomSpeed:0.5;
+			maxPolarAngle:1.85;
+			minDistance:1;
+			maxDistance:10;">
+		</a-entity>
+	</a-scene>
+</body>
+
+</html>

@@ -55,7 +55,7 @@
 		function handleClick(fun_num){
 			console.log('Switch to '+fun_num);
 			document.getElementById('middle').setAttribute('aframe-heatmap3d', {
-				src: '#fun' + fun_num});
+				src: '#fun' + fun_num, srcMobile: '#fun' + fun_num});
 			d3.select('#basemapEl').transition().attr('src','#fun'+fun_num);
 			//document.getElementById('basemapEl').setAttribute('src', '#png'+region);
 		} // handleClick()
@@ -80,6 +80,7 @@
 		id="middle"
 		aframe-heatmap3d="
 		src: #fun12;
+		srcMobile: #fun12;
 		ignoreZeroValues:false; 
 		invertElevation:true;
 		palette:parula;

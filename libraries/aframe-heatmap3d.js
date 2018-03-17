@@ -765,6 +765,7 @@ function palette2texture(palette){
 
 function Heatmap3dPlaneBufferGeometry( width, height, widthSegments, heightSegments, vals, skipZeros, skipNegative ) {
 
+
   THREE.BufferGeometry.call( this );
 
   var width_half = width / 2;
@@ -800,7 +801,9 @@ function Heatmap3dPlaneBufferGeometry( width, height, widthSegments, heightSegme
 
       // Note we bake in a rotateX(-90) operation here, as compared to THREE.PlaneBufferGeometry
       vertices.push( x,   vals[iy*gridX1 + ix ] , y );
-
+      if (iy == 0 && ix == 0) {
+        console.log(x, vals[iy*gridX1 + ix ], y);
+      }
       normals.push( 1,1, 1 );
 
       uvs.push( ix / gridX );

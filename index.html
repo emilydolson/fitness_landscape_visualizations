@@ -3,10 +3,14 @@
 	<meta charset="UTF-8">
 	<title>Fitness landscapes</title>
 	<script src="libraries/aframe.min.js"></script>
-    <script src="libraries/d3.js"></script>
+	<script src="libraries/stackblur.min.js"></script>
+	<script src="libraries/d3.js"></script>
 	<script src="libraries/aframe-heatmap3d.js"></script>
 	<script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
-
+    <script src="libraries/surface-lines.js"></script>
+	<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+	<script src="libraries/THREE.MeshLine.js"></script>
+	<script src="libraries/aframe-meshline-component.js"></script>	
 	<style>
 		body {
 			font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
@@ -63,7 +67,7 @@
 
 </head>
 <body>
-    <a-scene >
+    <a-scene id="scene">
 
 		<a-assets>
 			<img id="fun4" src="data/fun_4.jpg"  style="display:none"/>
@@ -86,7 +90,7 @@
 		palette:parula;
 		metalness:.5;
 		roughness:0;
-		stretch:true;
+		stackBlurRadius:1;		stretch:true;
 		flipPalette:false; 
 		renderMode: surface;
 		scaleOpacity: false;
@@ -100,7 +104,8 @@
 			geometry="primitive: box"
 			position="0 0 0"
 			material="visible:false">
-		</a-entity>
+
+			<a-entity meshline = "lineWidth:20; path:-0.12 -0.12 -467.724123203, -0.1 -0.1 -496.30454135, -0.0800000000001 -0.0800000000001 -525.143107232,-0.0600000000001 -0.0600000000001 -544.182201207; color:red;" ></a-entity>		</a-entity>
 
 		<a-entity daydream-controls></a-entity>
 
@@ -127,6 +132,8 @@
 			minDistance:1;
 			maxDistance:10;">
 		</a-entity>
+
+
 	</a-scene>
 
 	<div id="buttonPanel">

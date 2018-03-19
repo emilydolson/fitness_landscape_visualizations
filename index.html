@@ -10,7 +10,9 @@
     <script src="libraries/surface-lines.js"></script>
 	<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
 	<script src="libraries/THREE.MeshLine.js"></script>
-	<script src="libraries/aframe-meshline-component.js"></script>	
+	<script src="libraries/aframe-meshline-component.js"></script>
+	<script src="https://unpkg.com/aframe-camera-transform-controls-component/dist/aframe-camera-transform-controls-component.min.js"></script>
+	
 	<style>
 		body {
 			font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
@@ -67,7 +69,7 @@
 
 </head>
 <body>
-    <a-scene id="scene">
+    <a-scene id="scene" camera-transform-controls="">
 
 		<a-assets>
 			<img id="fun4" src="data/fun_4.jpg"  style="display:none"/>
@@ -90,7 +92,8 @@
 		palette:parula;
 		metalness:.5;
 		roughness:0;
-		stackBlurRadius:1;		stretch:true;
+		stackBlurRadius:1;		
+		stretch:true;
 		flipPalette:false; 
 		renderMode: surface;
 		scaleOpacity: false;
@@ -105,7 +108,9 @@
 			position="0 0 0"
 			material="visible:false">
 
-			<a-entity meshline = "lineWidth:20; path:-0.12 -0.12 -467.724123203, -0.1 -0.1 -496.30454135, -0.0800000000001 -0.0800000000001 -525.143107232,-0.0600000000001 -0.0600000000001 -544.182201207; color:red;" ></a-entity>		</a-entity>
+		</a-entity>
+
+		<a-entity meshline = "lineWidth:20; path:-0.12 -0.12 -467.724123203, -0.1 -0.1 -496.30454135, -0.0800000000001 -0.0800000000001 -525.143107232,-0.0600000000001 -0.0600000000001 -544.182201207; color:red;" ></a-entity>
 
 		<a-entity daydream-controls></a-entity>
 
@@ -115,7 +120,9 @@
 		<a-entity light="type: directional; target: middle; color: #FFF; intensity: 0.5" position="2 4 5"></a-entity>
 		<a-entity light="intensity: 2; distance: 1; angle: 90; target: middle; type:directional" position="5 5 3"></a-entity>
 
-		<a-entity
+        <a-entity id="cameraRig">
+            <!-- camera -->
+			<a-entity
 			camera="active:true"
 			id="camera_orbit"
 			position="0 2 3"
@@ -131,7 +138,10 @@
 			maxPolarAngle:1.85;
 			minDistance:1;
 			maxDistance:10;">
-		</a-entity>
+			</a-entity>
+            <a-entity id="lefthand" camera-transform-controls-hand="hand:left" vive-controls="hand: left" oculus-touch-controls="hand: left" windows-motion-controls="hand: left"></a-entity>
+            <a-entity id="righthand" camera-transform-controls-hand="hand:right" vive-controls="hand: right" oculus-touch-controls="hand: right" windows-motion-controls="hand: right"></a-entity>
+        </a-entity>
 
 
 	</a-scene>

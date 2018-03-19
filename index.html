@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
 	<title>Fitness landscapes</title>
     <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
@@ -16,7 +17,7 @@
 	<script src="libraries/aframe-meshline-component.js"></script> -->
 	<script src="https://unpkg.com/aframe-camera-transform-controls-component/dist/aframe-camera-transform-controls-component.min.js"></script>
 	
-	<style>
+	<!-- <style>
 		body {
 			font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
 			line-height: 1.6;
@@ -68,13 +69,13 @@
 			d3.select('#basemapEl').transition().attr('src','#fun'+fun_num);
 			//document.getElementById('basemapEl').setAttribute('src', '#png'+region);
 		} // handleClick()
-	</script>
+	</script> -->
 
 </head>
 <body>
     <a-scene id="scene" camera-transform-controls>
 
-		<a-assets>
+		<!-- <a-assets>
 			<img id="fun4" src="data/fun_4.jpg"  style="display:none"/>
 			<img id="fun5" src="data/fun_5.jpg"  style="display:none"/>
 			<img id="fun6" src="data/fun_6.jpg"  style="display:none"/>
@@ -83,7 +84,7 @@
 			<img id="fun11" src="data/fun_11.jpg"  style="display:none"/>
 			<img id="fun12" src="data/fun_12.jpg"  style="display:none"/>
 			<img id="fun13" src="data/fun_13.jpg"  style="display:none"/>
-		</a-assets>
+		</a-assets> -->
 
         <a-entity id="cameraRig">
             <!-- camera -->
@@ -133,7 +134,7 @@
 		<a-entity
 			id="target"
 			geometry="primitive: box"
-			position="0 0 0"
+			position="1 1 1"
 			material="visible:true">
 
 		</a-entity>

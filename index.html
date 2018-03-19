@@ -1,12 +1,8 @@
-<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
+	<meta charset="UTF-8">
 	<title>Fitness landscapes</title>
-    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
-
-	<!-- <script src="libraries/aframe.min.js"></script> -->
+	<script src="libraries/aframe.min.js"></script>
 	<script src="libraries/stackblur.min.js"></script>
 	<script src="libraries/d3.js"></script>
 	<script src="libraries/aframe-heatmap3d.js"></script>
@@ -15,9 +11,9 @@
 	<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
 	<script src="libraries/THREE.MeshLine.js"></script>
 	<script src="libraries/aframe-meshline-component.js"></script>
-	<script src="libraries/aframe-camera-transform-controls-component.min.js"></script>
+	<script src="https://unpkg.com/aframe-camera-transform-controls-component/dist/aframe-camera-transform-controls-component.min.js"></script>
 	
-	<!-- <style>
+	<style>
 		body {
 			font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
 			line-height: 1.6;
@@ -69,11 +65,11 @@
 			d3.select('#basemapEl').transition().attr('src','#fun'+fun_num);
 			//document.getElementById('basemapEl').setAttribute('src', '#png'+region);
 		} // handleClick()
-	</script> -->
+	</script>
 
 </head>
 <body>
-    <a-scene id="scene" camera-transform-controls>
+    <a-scene id="scene" camera-transform-controls="">
 
 		<a-assets>
 			<img id="fun4" src="data/fun_4.jpg"  style="display:none"/>
@@ -85,31 +81,6 @@
 			<img id="fun12" src="data/fun_12.jpg"  style="display:none"/>
 			<img id="fun13" src="data/fun_13.jpg"  style="display:none"/>
 		</a-assets>
-
-        <a-entity id="cameraRig">
-            <!-- camera -->
-			<!-- <a-entity
-			camera="active:true"
-			id="camera_orbit"
-			position="0 2 3"
-			look-controls
-			wasd-controls="fly:true"
-			orbit-controls="
-			autoRotate: false;
-			target: #target;
-			enableDamping: true;
-			dampingFactor: 0.125;
-			rotateSpeed:0.15;
-			zoomSpeed:0.5;
-			maxPolarAngle:1.85;
-			minDistance:1;
-			maxDistance:10;">
-			</a-entity> -->
-			<a-entity id="camera" camera wasd-controls look-controls orbit-controls></a-entity>
-			<a-entity id="lefthand" camera-transform-controls-hand="hand:left" vive-controls="hand: left" oculus-touch-controls="hand: left" windows-motion-controls="hand: left"></a-entity>
-            <a-entity id="righthand" camera-transform-controls-hand="hand:right" vive-controls="hand: right" oculus-touch-controls="hand: right" windows-motion-controls="hand: right"></a-entity>
-        </a-entity>
-
 
 		<a-entity	
 		id="middle"
@@ -129,7 +100,7 @@
 		scaleOpacityMethod:log2;
 		opacityMin: 0.99; 
 		 width: 3; height: 3;" scale="1 1 1">
-		</a-entity>
+		</a-entity>		
 
 		<a-entity
 			id="target"
@@ -138,24 +109,44 @@
 			material="visible:false">
 
 		</a-entity>
-        <!-- <a-entity id="environment" environment="preset: forest; fog: false"></a-entity> -->
-		<!-- <a-entity id="blueBox" mixin="blueBox" position="0 8 0"></a-entity> -->
-        <!-- <a-entity id="yellowSphere" geometry="primitive: sphere" material="color:#ff0; metalness:0.0; roughness:1.0" position="-2 2 -2"></a-entity> -->
-		<!-- <a-entity meshline = "lineWidth:20; path:-0.12 -0.12 -467.724123203, -0.1 -0.1 -496.30454135, -0.0800000000001 -0.0800000000001 -525.143107232,-0.0600000000001 -0.0600000000001 -544.182201207; color:red;" ></a-entity> -->
 
-		<!-- <a-entity daydream-controls></a-entity> -->
+		<a-entity meshline = "lineWidth:20; path:-0.12 -0.12 -467.724123203, -0.1 -0.1 -496.30454135, -0.0800000000001 -0.0800000000001 -525.143107232,-0.0600000000001 -0.0600000000001 -544.182201207; color:red;" ></a-entity>
+
+		<a-entity daydream-controls></a-entity>
 
 		<!-- Default lighting injected by A-Frame. -		-->
 		<!-- <a-entity light="type: ambient; color: #fff"></a-entity> -->
 
-		<!-- <a-entity light="type: directional; target: middle; color: #FFF; intensity: 0.5" position="2 4 5"></a-entity>
-		<a-entity light="intensity: 2; distance: 1; angle: 90; target: middle; type:directional" position="5 5 3"></a-entity> -->
+		<a-entity light="type: directional; target: middle; color: #FFF; intensity: 0.5" position="2 4 5"></a-entity>
+		<a-entity light="intensity: 2; distance: 1; angle: 90; target: middle; type:directional" position="5 5 3"></a-entity>
 
+        <a-entity id="cameraRig">
+            <!-- camera -->
+			<a-entity
+			camera="active:true; spectator:true"
+			id="camera_orbit"
+			position="0 2 3"
+			look-controls
+			wasd-controls="fly:true"
+			orbit-controls="
+			autoRotate: false;
+			target: #target;
+			enableDamping: true;
+			dampingFactor: 0.125;
+			rotateSpeed:0.15;
+			zoomSpeed:0.5;
+			maxPolarAngle:1.85;
+			minDistance:1;
+			maxDistance:10;">
+			</a-entity>
+            <a-entity id="lefthand" camera-transform-controls-hand="hand:left" vive-controls="hand: left" oculus-touch-controls="hand: left" windows-motion-controls="hand: left"></a-entity>
+            <a-entity id="righthand" camera-transform-controls-hand="hand:right" vive-controls="hand: right" oculus-touch-controls="hand: right" windows-motion-controls="hand: right"></a-entity>
+        </a-entity>
 
 
 	</a-scene>
 
-	<!-- <div id="buttonPanel">
+	<div id="buttonPanel">
 		<div class="button" style="top:0px; " onclick="handleClick('4')">Himmelblau</div>
 		<div class="button" style="top:150px;"  onclick="handleClick('5')">Six-Hump Camel Back</div>
 		<div class="button" style="top:280px;"  onclick="handleClick('6')">Shubert 2D</div>
@@ -165,7 +156,7 @@
 		<div class="button" style="top:730px;"  onclick="handleClick('12')">Composition Function 2</div>
 		<div class="button" style="top:880px;"  onclick="handleClick('13')">Composition Function 3</div>
 
-	</div> -->
+	</div>
 
 </body>
 

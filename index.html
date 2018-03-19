@@ -83,7 +83,7 @@
 			<img id="fun13" src="data/fun_13.jpg"  style="display:none"/>
 		</a-assets>
 
-        <a-entity id="cameraRig">
+        <a-entity id="cameraRig" position="0 2 3">
             <!-- camera -->
 			<!-- <a-entity
 			camera="active:true"
@@ -102,7 +102,7 @@
 			minDistance:1;
 			maxDistance:10;">
 			</a-entity> -->
-			<a-entity id="camera" camera wasd-controls look-controls orbit-controls="target:#target"></a-entity>
+			<a-entity id="camera" camera wasd-controls look-controls orbit-controls></a-entity>
 			<a-entity id="lefthand" camera-transform-controls-hand="hand:left" vive-controls="hand: left" oculus-touch-controls="hand: left" windows-motion-controls="hand: left"></a-entity>
             <a-entity id="righthand" camera-transform-controls-hand="hand:right" vive-controls="hand: right" oculus-touch-controls="hand: right" windows-motion-controls="hand: right"></a-entity>
         </a-entity>

@@ -1,7 +1,7 @@
 
-x_scale = d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]);
-y_scale = d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]);
-z_scale = d3.scaleLinear().domain([-1554, 0]).range([0, 1]);
+// x_scale = d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]);
+// y_scale = d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]);
+// z_scale = d3.scaleLinear().domain([-1554, 0]).range([0, 1]);
 
 draw_points = function(data) {
 
@@ -21,29 +21,28 @@ draw_points = function(data) {
 
 AFRAME.registerComponent("dataline", {
    schema: {
-       vertices: {
+       path: {
            default: "0,0,0",
-           type: "array",
+           type: "array"
        }
    },
    init: function(){
     var geometry = new THREE.Geometry();
-    
-    for (var i = 0; i < this.data.vertices.length; i+=3) {
-        
+    ssv = d3.dsvFormat(" ");
+
+    for (var i = 0; i < this.data.path.length; i++) {
+        var vert = ssv.parse(this.data.path[i]);
+        // console.log(vert)
         geometry.vertices.push(
-            new THREE.Vector3( x_scale(this.data.vertices[i]), z_scale(this.data.vertices[i+2]), y_scale(this.data.vertices[i+1]) )
+            new THREE.Vector3( x_scale(vert[0]), z_scale(vert[2]), y_scale(vert[1]) )
         );
         
     }
-    var material = new MeshLineMaterial({
-        color: "red",
-        linewidth: 5
+    var material = new THREE.LineBasicMaterial({
+        color: "red"
     });    
     
-    var line = new MeshLine();
-    line.setGeometry(geometry);
-    this.mesh = new THREE.Mesh(line.geometry, material);
-    this.el.setObject3D('dataline', this.mesh);
+    this.line = new THREE.Line(geometry, material);
+    this.el.setObject3D('dataline', this.line);
    }
 });

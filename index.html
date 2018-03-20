@@ -2,7 +2,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Fitness landscapes</title>
-	<script src="libraries/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+
+	<!-- <script src="libraries/aframe-v0.8.0.min.js"></script> -->
 	<script src="libraries/stackblur.min.js"></script>
 	<script src="libraries/d3.js"></script>
 	<script src="libraries/aframe-heatmap3d.js"></script>
@@ -57,6 +59,22 @@
 		}
 		</style>
 
+	<script type=text/javascript>
+		var fun4_scales = {"x":d3.scaleLinear().domain([-6, 6]).range([-1.5, 1.5]),
+						   "y":d3.scaleLinear().domain([-6, 6]).range([-1.5, 1.5]),
+						   "z":d3.scaleLinear().domain([-1986, 199.99998]).range([0, 1])
+						  };
+
+		var fun5_scales = {"x":d3.scaleLinear().domain([-1.9, 1.9]).range([-1.5, 1.5]),
+						   "y":d3.scaleLinear().domain([-1.1, 1.1]).range([-1.5, 1.5]),
+						   "z":d3.scaleLinear().domain([-5.86095, 1.031627]).range([0, 1.01])
+						  };
+
+		var x_scale = fun5_scales.x;
+		var y_scale = fun5_scales.y;
+		var z_scale = fun5_scales.z;
+</script>
+
 	<script type="text/javascript">
 		function handleClick(fun_num){
 			console.log('Switch to '+fun_num);
@@ -66,6 +84,7 @@
 			//document.getElementById('basemapEl').setAttribute('src', '#png'+region);
 		} // handleClick()
 	</script>
+
 
 </head>
 <body>
@@ -85,8 +104,8 @@
 		<a-entity	
 		id="middle"
 		aframe-heatmap3d="
-		src: #fun12;
-		srcMobile: #fun12;
+		src: #fun5;
+		srcMobile: #fun5;
 		ignoreZeroValues:false; 
 		invertElevation:true;
 		palette:parula;
@@ -109,8 +128,6 @@
 			material="visible:false">
 
 		</a-entity>
-
-		<a-entity meshline = "lineWidth:20; path:-0.12 -0.12 -467.724123203, -0.1 -0.1 -496.30454135, -0.0800000000001 -0.0800000000001 -525.143107232,-0.0600000000001 -0.0600000000001 -544.182201207; color:red;" ></a-entity>
 
 		<a-entity daydream-controls></a-entity>
 
@@ -143,6 +160,46 @@
             <a-entity id="righthand" camera-transform-controls-hand="hand:right" vive-controls="hand: right" oculus-touch-controls="hand: right" windows-motion-controls="hand: right"></a-entity>
         </a-entity>
 
+		<a-entity id="lines">
+
+		</a-entity>
+		<!-- <a-entity meshline = "lineWidth:20; path:-0.12 -0.12 -467.724123203, -0.1 -0.1 -496.30454135, -0.0800000000001 -0.0800000000001 -525.143107232,-0.0600000000001 -0.0600000000001 -544.182201207; color:red;" ></a-entity> -->
+		<script>
+				d3.text("lineage_history_5000854_5.csv", function(error, data){
+					if (error) {
+						throw error;
+					}
+					// var scene = d3.select("#scene");
+					// scene.selectAll("a-entity")
+					// console.log("logging data", data);
+					var ssv = d3.dsvFormat(" ");
+		
+					var points = data.split(",");
+					// console.log("ponts:", points);
+					// points = points.map(ssv.parse);
+					// console.log("ponts:", points, ssv.parse);
+					points = points.map(x => {
+						x = x.split(" "); 
+						return [x_scale(x[0]), z_scale(x[2]), y_scale(x[1])];
+					});
+		
+					
+					data_to_bind = [];
+					for (var i = 0; i < points.length-1; i++) {
+						// var v = ssv.parse(points[i]);
+						data_to_bind.push({"start": points[i], "end":points[i+1]});
+					}
+					// console.log(data_to_bind);
+					d3.select("#lines").selectAll("a-entity")
+									   .data(data_to_bind)
+									   .enter()
+									   .append("a-entity")
+									   .attr("line", function(d,i){return "start: " + d.start.join(", ") + "; end: " + d.end.join(", ")+"; color: "+d3.hsl(0, 0, i/data_to_bind.length);});
+									//    .attr("meshline", "lineWidth:10; color:red; path:"+ data);
+				});
+				
+		
+			</script>
 
 	</a-scene>
 
@@ -157,6 +214,7 @@
 		<div class="button" style="top:880px;"  onclick="handleClick('13')">Composition Function 3</div>
 
 	</div>
+
 
 </body>
 

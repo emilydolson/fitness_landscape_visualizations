@@ -1,7 +1,7 @@
 
-x_scale = d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]);
-y_scale = d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]);
-z_scale = d3.scaleLinear().domain([-1554, 0]).range([0, 1.03]);
+// x_scale = d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]);
+// y_scale = d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]);
+// z_scale = d3.scaleLinear().domain([-1554, 0]).range([0, 1.03]);
 
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache

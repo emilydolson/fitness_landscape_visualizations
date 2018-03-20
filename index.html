@@ -70,6 +70,37 @@
 						   "z":d3.scaleLinear().domain([-5.86095, 1.031627]).range([0, 1.01])
 						  };
 
+	    var fun6_scales = {"x":d3.scaleLinear().domain([-10, 10]).range([-1.5, 1.5]),
+						   "y":d3.scaleLinear().domain([-10, 10]).range([-1.5, 1.5]),
+						   "z":d3.scaleLinear().domain([-210.27662470796076, 186.615794955561]).range([0, 1.01])
+						  };
+
+	    var fun7_scales = {"x":d3.scaleLinear().domain([.25, 10]).range([-1.5, 1.5]),
+						   "y":d3.scaleLinear().domain([.25, 10]).range([-1.5, 1.5]),
+						   "z":d3.scaleLinear().domain([-.9999982330513699, 0.999999972963692]).range([0, 1.01])
+						  };
+
+	    var fun10_scales = {"x":d3.scaleLinear().domain([0, 1]).range([-1.5, 1.5]),
+						    "y":d3.scaleLinear().domain([0, 1]).range([-1.5, 1.5]),
+						    "z":d3.scaleLinear().domain([-38.0, -2.0004450187892893]).range([0, 1.01])
+						  };
+
+	    var fun11_scales = {"x":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
+						    "y":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
+						    "z":d3.scaleLinear().domain([-2171.198973635492, -0.002367801442371835]).range([0, 1.01])
+						  };
+
+	    var fun12_scales = {"x":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
+						    "y":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
+						    "z":d3.scaleLinear().domain([-2049.851816104665, -0.016231402532577894]).range([0, 1.01])
+						  };
+
+	    var fun13_scales = {"x":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
+						    "y":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
+						    "z":d3.scaleLinear().domain([-3636.8380518041745, -0.0015356224293130573]).range([0, 1.01])
+						  };
+
+
 		var x_scale = fun5_scales.x;
 		var y_scale = fun5_scales.y;
 		var z_scale = fun5_scales.z;
@@ -81,6 +112,10 @@
 			document.getElementById('middle').setAttribute('aframe-heatmap3d', {
 				src: '#fun' + fun_num, srcMobile: '#fun' + fun_num});
 			d3.select('#basemapEl').transition().attr('src','#fun'+fun_num);
+			x_scale = window["fun"+fun_num+"_scales"].x
+			y_scale = window["fun"+fun_num+"_scales"].y
+			z_scale = window["fun"+fun_num+"_scales"].z
+			
 			//document.getElementById('basemapEl').setAttribute('src', '#png'+region);
 		} // handleClick()
 	</script>

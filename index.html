@@ -195,46 +195,69 @@
             <a-entity id="righthand" camera-transform-controls-hand="hand:right" vive-controls="hand: right" oculus-touch-controls="hand: right" windows-motion-controls="hand: right"></a-entity>
         </a-entity>
 
-		<a-entity id="lines">
+		<!-- <a-entity id="lines">
 
-		</a-entity>
-		<!-- <a-entity meshline = "lineWidth:20; path:-0.12 -0.12 -467.724123203, -0.1 -0.1 -496.30454135, -0.0800000000001 -0.0800000000001 -525.143107232,-0.0600000000001 -0.0600000000001 -544.182201207; color:red;" ></a-entity> -->
+		</a-entity> -->
+		<!-- <a-entity dataline = "path:-.5 -.5 -4, .5 .5 1, .5 -.5 0;" ></a-entity> -->
 		<script>
-				d3.text("lineage_history_5000854_5.csv", function(error, data){
-					if (error) {
-						throw error;
-					}
+
+			var draw_lineage = function(data){
 					// var scene = d3.select("#scene");
 					// scene.selectAll("a-entity")
 					// console.log("logging data", data);
-					var ssv = d3.dsvFormat(" ");
+					// var ssv = d3.dsvFormat(" ");
 		
-					var points = data.split(",");
-					// console.log("ponts:", points);
-					// points = points.map(ssv.parse);
-					// console.log("ponts:", points, ssv.parse);
-					points = points.map(x => {
-						x = x.split(" "); 
-						return [x_scale(x[0]), z_scale(x[2]), y_scale(x[1])];
-					});
+					// var points = data.split(",");
+					// // console.log("ponts:", points);
+					// // points = points.map(ssv.parse);
+					// // console.log("ponts:", points, ssv.parse);
+					// points = points.map(x => {
+					// 	x = x.split(" "); 
+					// 	return [x_scale(x[0]), z_scale(x[2]), y_scale(x[1])];
+					// });
 		
 					
-					data_to_bind = [];
-					for (var i = 0; i < points.length-1; i++) {
-						// var v = ssv.parse(points[i]);
-						data_to_bind.push({"start": points[i], "end":points[i+1]});
-					}
-					// console.log(data_to_bind);
-					d3.select("#lines").selectAll("a-entity")
-									   .data(data_to_bind)
-									   .enter()
-									   .append("a-entity")
-									   .attr("line", function(d,i){return "start: " + d.start.join(", ") + "; end: " + d.end.join(", ")+"; color: "+d3.hsl(0, 0, i/data_to_bind.length);});
+					// data_to_bind = [];
+					// for (var i = 0; i < points.length-1; i++) {
+					// 	// var v = ssv.parse(points[i]);
+					// 	data_to_bind.push({"start": points[i], "end":points[i+1], "color": d3.hsl(0, 0, i/data_to_bind.length)});
+					// }
+					// // console.log(data_to_bind);
+					var sceneEl = document.querySelector('a-scene');
+					var lineEl = document.createElement('a-entity');
+					// var sphereEl = document.createElement('a-entity');
+					
+					lineEl.setAttribute("dataline", "path", data);
+					
+					// for (var i = 0; i < 1023; i++) {
+					// 	// console.log(i, data_to_bind[i]);
+					// 	// entityEl.setAttribute("line__"+i, "start", "0, 0, 0");
+					// 	entityEl.setAttribute("line__"+i.toString(), data_to_bind[i]);
+
+					// }
+					sceneEl.appendChild(lineEl);
+					// d3.select("#lines").append("a-entity")
+					// 				   .selectAll("a-entity")
+					// 				   .data(data_to_bind)
+					// 				   .enter()
+					// 				   .append("a-entity")
+					// 				   .attr("line", function(d,i){return "start: " + d.start.join(", ") + "; end: " + d.end.join(", ")+"; color: "+d3.hsl(0, 0, i/data_to_bind.length);});
 									//    .attr("meshline", "lineWidth:10; color:red; path:"+ data);
-				});
-				
+			};
+
+			d3.text("lineage_short.csv", function(error, data) {
+				if (error){
+					throw error;
+				}
+
+				for (line of data.split("\n")){
+					// console.log(line);
+					draw_lineage(line);
+				}
+
+			});				
 		
-			</script>
+		</script>
 
 	</a-scene>
 

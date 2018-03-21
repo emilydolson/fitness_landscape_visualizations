@@ -22,27 +22,37 @@ draw_points = function(data) {
 AFRAME.registerComponent("dataline", {
    schema: {
        path: {
-           default: "0,0,0",
+           default: ["0 0 0"],
            type: "array"
        }
    },
    init: function(){
     var geometry = new THREE.Geometry();
-    ssv = d3.dsvFormat(" ");
 
     for (var i = 0; i < this.data.path.length; i++) {
-        var vert = ssv.parse(this.data.path[i]);
-        // console.log(vert)
+        var vert = this.data.path[i].split(" ");
+        // console.log(vert);
         geometry.vertices.push(
             new THREE.Vector3( x_scale(vert[0]), z_scale(vert[2]), y_scale(vert[1]) )
         );
-        
+        if (i > 0 && i < this.data.path.length) {
+            geometry.vertices.push(
+                new THREE.Vector3( x_scale(vert[0]), z_scale(vert[2]), y_scale(vert[1]) )
+            );
+        }
     }
+
+    for (var i = 0.0; i < geometry.vertices.length; i+=2) {
+        hsl_color = d3.hsl(0.0, 0.0, i/geometry.vertices.length);
+        geometry.colors[i] = new THREE.Color(hsl_color.toString());
+        geometry.colors[i+1] = new THREE.Color(hsl_color.toString());    
+    }
+
     var material = new THREE.LineBasicMaterial({
-        color: "red"
+        vertexColors: THREE.VertexColors
     });    
     
-    this.line = new THREE.Line(geometry, material);
+    this.line = new THREE.LineSegments(geometry, material);
     this.el.setObject3D('dataline', this.line);
    }
 });

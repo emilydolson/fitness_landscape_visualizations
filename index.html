@@ -104,17 +104,12 @@
 		var x_scale = fun5_scales.x;
 		var y_scale = fun5_scales.y;
 		var z_scale = fun5_scales.z;
+
+		var problem_map = {4:0, 5:1, 6:2, 12:6};
 </script>
 
 	<script type="text/javascript">
 		function handleClick(fun_num){
-			console.log('Switch to '+fun_num);
-			document.getElementById('middle').setAttribute('aframe-heatmap3d', {
-				src: '#fun' + fun_num, srcMobile: '#fun' + fun_num});
-			d3.select('#basemapEl').transition().attr('src','#fun'+fun_num);
-			x_scale = window["fun"+fun_num+"_scales"].x
-			y_scale = window["fun"+fun_num+"_scales"].y
-			z_scale = window["fun"+fun_num+"_scales"].z
 			
 			//document.getElementById('basemapEl').setAttribute('src', '#png'+region);
 		} // handleClick()
@@ -123,7 +118,173 @@
 
 </head>
 <body>
-    <a-scene id="scene" camera-transform-controls="">
+
+	<label> Fitness landscape:
+		<select id="problem", name="problem">
+			<option value="4">Himmelblau</option>
+			<option value="5" selected>Six-Hump Camel Back</option>
+			<option value="6">Shubert 2D</option>
+			<option value="12">Composition Function 2</option>
+		</select>
+	</label>
+
+	<label> Z separation:
+		<input id="z_slider" type="range" min="0" max=".25" step="0.0001" value=".01">
+	</label>
+	
+	<label> Draw lines? 
+		<input id="lines_checkBox" type="checkbox">
+	</label>
+
+	<label> Draw startpoints? 
+		<input id="starts_checkBox" type="checkbox">
+	</label>
+
+	<label> Draw endpoints? 
+		<input id="ends_checkBox" type="checkbox">
+	</label>
+
+	<label> Elite? 
+		<input id="elite_checkBox" type="checkbox">
+	</label>
+
+	<label> Selection scheme:
+		<select id="selection", name="selection">
+			<option value="0">Tournament</option>
+			<!-- <option value="1">Lexicase</option> -->
+			<option value="2">Eco-EA</option>
+			<option value="4">Roulette</option>
+			<option value="5">Drift</option>
+		</select>
+	</label>
+
+	<label> Mutation rate:
+		<select id="mut_rate", name="mut_rate">
+			<option value="0.1">0.1</option>
+			<option value="0.01">0.01</option>
+			<option value="0.001">0.001</option>
+			<option value="0.0001">0.0001</option>
+			<!-- <option value="0.00001">0.00001</option> -->
+			<!-- <option value="0.000001">0.000001</option> -->
+		</select>
+	</label>
+
+	<label> Tournament size:
+		<select id="tour_size", name="tour_size">
+			<option value="2">2</option>
+			<option value="4">4</option>
+			<option value="8">8</option>
+			<option value="16">16</option>
+		</select>
+	</label>
+
+
+	<label> Number of lineage paths to draw:
+		<select id="n_lineages", name="n_lineages">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+	</label>
+
+	<!-- <label> Epsilon:
+		<select id="epsilon", name="epsilon">
+			<option value="0">0</option>
+			<option value="0.01">0.01</option>
+			<option value="1e-09">1e-09</option>
+			<option value="1e-12">1e-12</option>
+		</select>
+	</label> -->
+
+	<button type="button" onclick="load_data()">Redraw</button>
+
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded',function() {
+			document.querySelector('select[name="problem"]').onchange=problemChangeEventHandler;	
+		},false);
+
+		function problemChangeEventHandler(event) {
+			
+			if(!event.target.value) return;
+			else {
+				console.log('Switch to '+event.target.value);
+				document.getElementById('middle').setAttribute('aframe-heatmap3d', {
+					src: '#fun' + event.target.value, srcMobile: '#fun' + event.target.value});
+				d3.select('#basemapEl').transition().attr('src','#fun'+event.target.value);
+				x_scale = window["fun"+event.target.value+"_scales"].x
+				y_scale = window["fun"+event.target.value+"_scales"].y
+				z_scale = window["fun"+event.target.value+"_scales"].z
+				load_data();
+			} 
+		}
+
+		function load_data() {
+			// console.log("loading data");
+			z_scale.range([0,1.01]);
+			var lines = document.querySelectorAll("[dataline]");
+			for (var i = 0; i < lines.length; i++) {
+				lines[i].parentNode.removeChild(lines[i]);
+			}
+
+			var spheres = document.querySelectorAll("a-sphere");
+			for (var i = 0; i < spheres.length; i++) {
+				spheres[i].parentNode.removeChild(spheres[i]);
+			}
+
+			var selection = document.querySelector('select[name="selection"]').value;
+			var problem = problem_map[document.querySelector('select[name="problem"]').value];
+
+			d3.csv("P"+problem+"S"+selection+".csv", function(error, data) {
+				if (error){
+					throw error;
+				}
+				console.log("loaded data");
+				// var epsilon = document.querySelector('select[name="epsilon"]').value;
+				var tour_size = document.querySelector('select[name="tour_size"]').value;
+				var mut_rate = document.querySelector('select[name="mut_rate"]').value;
+				var elite = document.querySelector('#elite_checkbox').checked;
+				var n_lineages = +document.querySelector('#n_lineages').value;
+				// console.log(tour_size, mut_rate, selection, problem);
+				var i = 0;
+				// var seeds = [];
+				for (line of data){
+					// console.log(line);
+					if (line.SELECTION_METHOD == selection && 
+					(line.TOURNAMENT_SIZE == tour_size || selection != "0") &&
+					// (line.LEXICASE_EPSILON == epsilon || selection != "1") &&
+					line.MUTATION_STD == mut_rate && line.PROBLEM == problem &&
+					(line.ELITE_SELECT__ELITE_CNT == +elite)) {
+							// if (i==1) {
+							// console.log(line.RANDOM_SEED);
+							// if (!seeds.includes(line.RANDOM_SEED)) {
+								// console.log(seeds);
+								// console.log("drawing");
+								draw_lineage(line.path);
+								// seeds.push(line.RANDOM_SEED);
+								i++;
+								if (i >= n_lineages) {
+									break;
+								}
+							// }
+
+							
+							
+					}
+				}
+
+			});				
+		}
+
+	</script>
+
+	<a-scene id="scene" camera-transform-controls="">
 
 		<a-assets>
 			<img id="fun4" src="data/fun_4.jpg"  style="display:none"/>
@@ -134,6 +295,7 @@
 			<img id="fun11" src="data/fun_11.jpg"  style="display:none"/>
 			<img id="fun12" src="data/fun_12.jpg"  style="display:none"/>
 			<img id="fun13" src="data/fun_13.jpg"  style="display:none"/>
+
 		</a-assets>
 
 		<a-entity	
@@ -224,18 +386,54 @@
 					// }
 					// // console.log(data_to_bind);
 					var sceneEl = document.querySelector('a-scene');
-					var lineEl = document.createElement('a-entity');
-					// var sphereEl = document.createElement('a-entity');
-					
-					lineEl.setAttribute("dataline", "path", data);
-					
+
+					if (document.querySelector('#starts_checkbox').checked) {
+						var startSphereEl = document.createElement('a-sphere');
+						var startpos = data.slice(data.lastIndexOf(",")+1, data.length).split(" ");
+						startpos[0] = x_scale(startpos[0]);
+						var y = y_scale(startpos[1]);
+						var z = z_scale(startpos[2]);
+						startpos[1] = z;
+						startpos[2] = y;
+
+						startSphereEl.setAttribute("position", startpos.join(" "));
+						startSphereEl.setAttribute("radius", .01);
+						sceneEl.appendChild(startSphereEl);
+					}
+
+					if (document.querySelector('#ends_checkbox').checked) {
+						var endSphereEl = document.createElement('a-sphere');
+						var endpos = data.slice(0,data.indexOf(",")).split(" ");
+
+						endpos[0] = x_scale(endpos[0]);
+						y = y_scale(endpos[1]);
+						z = z_scale(endpos[2]);
+						endpos[1] = z;
+						endpos[2] = y;
+
+						endSphereEl.setAttribute("position", endpos.join(" "));
+						endSphereEl.setAttribute("radius", .01);
+						endSphereEl.setAttribute("material", "color", "black");
+						sceneEl.appendChild(endSphereEl);
+					}
+					// console.log(data)
+					if (document.querySelector('#lines_checkbox').checked) {
+						var lineEl = document.createElement('a-entity');
+						lineEl.setAttribute("dataline", {"path": data, "z_increment":document.querySelector('#z_slider').value});
+						sceneEl.appendChild(lineEl);
+					}
+
+					// lineEl.setAttribute("dataline", "z_increment", .1);
+
 					// for (var i = 0; i < 1023; i++) {
 					// 	// console.log(i, data_to_bind[i]);
 					// 	// entityEl.setAttribute("line__"+i, "start", "0, 0, 0");
 					// 	entityEl.setAttribute("line__"+i.toString(), data_to_bind[i]);
 
 					// }
-					sceneEl.appendChild(lineEl);
+					
+
+
 					// d3.select("#lines").append("a-entity")
 					// 				   .selectAll("a-entity")
 					// 				   .data(data_to_bind)
@@ -245,33 +443,10 @@
 									//    .attr("meshline", "lineWidth:10; color:red; path:"+ data);
 			};
 
-			d3.text("lineage_short.csv", function(error, data) {
-				if (error){
-					throw error;
-				}
-
-				for (line of data.split("\n")){
-					// console.log(line);
-					draw_lineage(line);
-				}
-
-			});				
-		
+			load_data();		
 		</script>
 
 	</a-scene>
-
-	<div id="buttonPanel">
-		<div class="button" style="top:0px; " onclick="handleClick('4')">Himmelblau</div>
-		<div class="button" style="top:150px;"  onclick="handleClick('5')">Six-Hump Camel Back</div>
-		<div class="button" style="top:280px;"  onclick="handleClick('6')">Shubert 2D</div>
-		<div class="button" style="top:430px;"  onclick="handleClick('7')">Vincent 2D</div>
-		<div class="button" style="top:430px;"  onclick="handleClick('10')">Modified Rastrigin</div>
-		<div class="button" style="top:580px;"  onclick="handleClick('11')">Composition Function 1</div>
-		<div class="button" style="top:730px;"  onclick="handleClick('12')">Composition Function 2</div>
-		<div class="button" style="top:880px;"  onclick="handleClick('13')">Composition Function 3</div>
-
-	</div>
 
 
 </body>

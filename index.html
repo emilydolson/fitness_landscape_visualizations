@@ -432,7 +432,7 @@
 			var selection = document.querySelector('select[name="selection"]').value;
 			var problem = problem_map[document.querySelector('select[name="problem"]').value];
 
-			d3.csv("P"+problem+"S"+selection+".csv", function(error, data) {
+			d3.csv("data/P"+problem+"S"+selection+".csv", function(error, data) {
 				if (error){
 					throw error;
 				}

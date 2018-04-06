@@ -19,10 +19,10 @@
 	<!-- <script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/v0.1.14/dist/aframe-orbit-controls-component.min.js"></script>  -->
 	<script src="libraries/surface-lines.js"></script>
 	<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
-	<script src="libraries/THREE.MeshLine.js"></script>
-	<script src="libraries/aframe-meshline-component.js"></script>
+	<!-- <script src="libraries/THREE.MeshLine.js"></script> -->
+	<!-- <script src="libraries/aframe-meshline-component.js"></script> -->
 	<script src="libraries/aframe-camera-transform-controls-component.min.js"></script>
-	<script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.0.0/dist/aframe-extras.min.js"></script>
+	<!-- <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.0.0/dist/aframe-extras.min.js"></script> -->
 
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -101,35 +101,124 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 			<div class="modal-header">
-				<h2 class="modal-title" id="exampleModalLongTitle">Common questions</h2>
+				<h2 class="modal-title" id="exampleModalLongTitle">FAQ</h2>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
+					<h4> What is this showing? </h4>
+					<p>
+					This will all make a lot more sense if you read one of the associated papers (pre-prints forthcoming),
+					but the basic idea is that this visualization allows us to quickly get a sense of the aggregate effect
+					of the long sequence of small events that make up the process of evolution. Each one of the paths that
+					you can draw on the landscape represents the entire chain of ancestry for a single evolved individual. Each
+					individual is an x,y coordinate pair. The populations are evolving on 2-input real-valued functions (represented
+					by the curved surface). Fitness is evaluated by plugging an individual's x and y coordinates into the function.
+					Individuals are then plotted on the surface, with fitness being the z coordinate.
+					<br><br>
+					The individuals in this data set were all the fittest member of the population at the end of their respective
+					runs of the algorithm. By drawing paths from their coordinates, to their parents' coordinates, to their grandparents'
+					coordinates and so on, we can see how evolution traverses this fitness landscape.
+					<br><br>
+					If you've looked at the settings panel, you'll notice there are a lot of options. That's because this data represents
+					a large number of runs of evolution in a wide variety of conditions. The settings panel lets you choose subsets to look at.
+					</p>
+
 					<h4> Why is nothing showing up? </h4>
 					<p> Probably because you haven't told it to draw anything! 
 						Go to settings (gear icon), check the boxes for the annotations you want 
 						(e.g. spheres for start and end points, paths for full lineages), and 
 						then click the "Draw" button. It might take a bit to render, but data should
-						show up. If it doesn't, send me an issue on GitHub - this is all still pretty
+						show up. 
+						<br><br>
+						Note that at low mutations rates lineages are often very short and can be hard to see.
+						<br><br>
+						If there is still nothing, <a href="https://github.com/emilydolson/fitness_landscape_visualizations">send me an issue on GitHub</a> - this is all still pretty
 						experimental.
 					</p>
 					<br>
 					<h4> What VR devices are supported? </h4>
-					<p> Check out <a href="webvr.rocks">webvr.rocks</a> for more thorough information. In general, most browsers will at least render it in WebGL.
+					<p> Check out <a href="https://webvr.rocks">webvr.rocks</a> for more thorough information. In general, most browsers 
+						will at least render it in WebGL. In this mode, you can use your mouse to click and drag to rotate the visualization
+						and see it from different angles.
+						<br><br>
 						To use virtual reality, you need something more advanced. 
-						<br>
+						<br><br>
 						If you have a phone-mount headset, such as Google Cardboard, and a phone that is
 						compatible with it, you should be able to use that. Navigate to this website on your phone, 
 						select and draw the data you want to see, and tap the goggles icon in the lower right corner. 
-						This should open it in VR mode ()
+						This should open it in VR mode (in which your phone displays two images, one for each eye). You can
+						then put the phone in the headset and look at the visualization in three dimensions.
+						<br><br>
+						If you have a more advanced VR system, such as an Oculus Rift or HTC Vive, you can open this webpage
+						on the computer connected to the VR system. Clicking the gray goggles icon in the lower right corner should
+						bring up the visualization on your headset. You can then put on the headset and walk around the visualization.
+						If you have two hand controllers, you can use them to zoom in and out with pinch and spread gestures (like 
+						you would use on a touch screen). Note that this has been tested on a Rift, but not yet on a Vive. If you try
+						it on a Vive (or something else, like Windows Mixed Reality) I'd love to hear how it goes.
+					</p>
+					<br>
+					<h4> What are the different selection schemes? </h4>
+					<p>
+						Tournament selection: [TOURNAMENT_SIZE] individuals are chosen randomly from the population and the fittest reproduces. 
+						Increasing tournament size essentially increases the strength of selection.
+						<br><br>
+						Roulette selection: Individuals are chosen to reproduce with probability proportional to their fitness.
+						<br><br>
+						Eco-EA: Like tournament selection, except that individuals receive fitness bonuses for occupying rare niches (in these problems, 
+						that entails being in a part of the landscape where there aren't many other individuals). For more detail, see 
+						<a href="http://ofria.com/pubs/2012GoingsEtAl.pdf">(Goings and Ofria, 2010)</a>.
+						<br><br>
+						Drift: Individuals are selection to reproduce enti
+						rely at random.
+					</p>
+
+					<h4> Where did these fitness functions come from? </h4>
+					<p>
+						The <a href="http://www.epitropakis.co.uk/gecco2018/">GECCO Niching competition</a>.
+					</p>
+
+					<h4>I want to know more about using VR for data visualization</h4>
+					<p>
+						Me too! There's still a lot for everyone to learn about how to most effectively take advantage of virtual reality for data visualization.
+						The Knight Foundation has been doing some really great work to figure all of this out. I found 
+						<a href="https://studio.knightlab.com/results/exploring-data-visualization-in-vr/uncharted-territory-datavis-vr/">this article</a> particularly helpful,
+						and <a href="https://medium.com/journalism360/immersive-data-visualisation-a-brief-update-on-our-journalism-360-grant-99b37acfb3b2">
+							this article</a> has a bunch of really cool examples. Their work is all aimed at journalism, though. I'm planning on writing a blog post soon,
+							detailing what this project has taught me specifically about using VR for data visualization in the context of evolution.
+					</p>
+
+					<h4> What tools did you use to build this? </h4>
+					<p>
+					For full details, see <a href="https://github.com/emilydolson/fitness_landscape_visualizations">the GitHub repo for this site</a>. In summary, though, I used:
+					<li><a href="https://aframe.io/">A-Frame</a>: an open source and very straightforward web framework for virtual reality with a great community around it, all of whom were very helpful. </li>
+					<li><a href="https://github.com/morandd/aframe-heatmap3d">The A-Frame Heatmap-3D component</a>: an A-Frame extension which I could not have done this without (it draws the fitness landscape). </li>
+					<li><a href="https://github.com/fernandojsg/aframe-camera-transform-controls-component">The A-Frame camera-transform-controls component</a>: an A-Frame extension which I used to add the hand gestures on the Oculus Rift and HTC Vive. </li>
+					<li><a href="https://getbootstrap.com">Bootstrap</a>: an open source web framework, which I used to make this website. </li>
+					<li><a href="https://useiconic.com/open/">Open Iconic</a>: open source icons which I used for the buttons on this site. </li>
+					<br><br>
+					And of course my trusty laptop running <a href="https://linuxmint.com/">Linux Mint</a>.
+					</p>
+
+					<h4>Who else helped make this happen?</h4>
+					<p>
+						I'm very grateful to <a href="http://www.lalejini.com">Alex Lalejini</a>, <a href="http://www.ofria.com">Charles Ofria</a>, and 
+						the rest of the MSU <a href="http://www.devolab.msu.edu">Digital Evolution Lab</a> for their input on this project.
+						I also thank the MSU <a href="http://www.icer.msu.edu/">Institute for Cyber-Enabled Research</a> for the computational resources
+						to generate this data in the first place, and the MSU <a href="http://digitalscholarshiplab.msu.edu/">Digital Scholarship Lab</a>
+						for giving me access to (and helping me configure!) an Oculus Rift on which to develop and use this visualization.
+					</p>
+
+					<h4>Who are you?</h4>
+					<p>
+					I'm a PhD student at Michigan State University studying evolution, ecology, and computer science. To learn more about my research, see <a href="http://www.emilyldolson.com"> my website</a>.
 					</p>
 	
 				</div>
 			<div class="modal-footer">
 					<a href="https://twitter.com/emilyldolson" class="twitter-follow-button" data-show-count="false">Follow me on Twitter!</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> </li>
-					<a class="github-button" href="https://github.com/emilydolson" data-style="mega" aria-label="Follow @emilydolson on GitHub">My Github</a> </li>
+					<a class="github-button" href="https://github.com/emilydolson" data-style="mega" aria-label="My Github">My Github</a> </li>
 		
 			</div>
 			</div>

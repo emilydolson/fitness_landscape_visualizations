@@ -1,6 +1,8 @@
 # fitness_landscape_visualizations
 Experimenting with various ways of visualizing fitness landscapes.
 
+![](example.png)
+
 Currently built using:
 - https://github.com/morandd/aframe-heatmap3d
 - https://aframe.io/

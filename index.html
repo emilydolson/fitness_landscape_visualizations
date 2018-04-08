@@ -29,6 +29,26 @@
 			word-wrap:break-word;
 		}
 
+		.dont-break-out {
+
+			/* These are technically the same, but use both */
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+
+			-ms-word-break: break-all;
+			/* This is the dangerous one in WebKit, as it breaks things wherever */
+			word-break: break-all;
+			/* Instead use this non-standard one: */
+			word-break: break-word;
+
+			/* Adds a hyphen where the word breaks, if supported (No Blink) */
+			-ms-hyphens: auto;
+			-moz-hyphens: auto;
+			-webkit-hyphens: auto;
+			hyphens: auto;
+
+		}
+
 	</style>
 
 
@@ -235,9 +255,9 @@
 	<div id="banner" class = "jumbotron" style="padding-bottom:10px;background: #000000;">
 
 		<div class="container-fluid">			
-			<div class="row justify-content-between" style="word-wrap: break-word;">
-				<div class="col-auto" style="word-wrap: break-word;">
-					<h1 style="color:#FFF;" style="word-wrap: break-word;">Visualizing evolutionary history with WebVR </h1>
+			<div class="row justify-content-between">
+				<div class="col-auto">
+					<h1 class="dont-break-out" style="color:#FFF;">Visualizing evolutionary history with WebVR </h1>
 				</div>
 				<div class="col-auto">
 					<div class="row justify-content-end">

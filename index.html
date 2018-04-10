@@ -1,106 +1,331 @@
 <html>
 <head>
+	<title>Visualizing evolutionary history with WebVR</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>Fitness landscapes</title>
-    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+	<!-- Load A-Frame -->
+    <script src="js/aframe.min.js"></script>
 
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<!-- Load stuff for bootstrap -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 
-	<script src="libraries/stackblur.min.js"></script>
-	<script src="libraries/d3.js"></script>
-	<script src="libraries/aframe-heatmap3d.js"></script>
-	<script src="libraries/aframe-orbit-controls-component.min.js"></script>
-	<script src="libraries/surface-lines.js"></script>
-	<script src="libraries/aframe-camera-transform-controls-component.min.js"></script>
+	<!-- Load stuff related to AFrame plugins -->
+	<script src="js/stackblur.min.js"></script>
+	<script src="js/d3.js"></script>
+	<script src="js/aframe-heatmap3d.js"></script>
+	<script src="js/aframe-orbit-controls-component.min.js"></script>
+	<script src="js/surface-lines.js"></script>
+	<script src="js/aframe-camera-transform-controls-component.min.js"></script>
 
+	<!-- Load style sheets (for bootstrap and specific to this page) -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/main.css">
 
-
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-	<style>
-		.tooltip-arrow,
-		.tooltip > .tooltip-inner {background-color: #007bff;}
-	</style>
-
-
-	<script type=text/javascript>
-		var fun4_scales = {"x":d3.scaleLinear().domain([-6, 6]).range([-1.5, 1.5]),
-						   "y":d3.scaleLinear().domain([-6, 6]).range([-1.5, 1.5]),
-						   "z":d3.scaleLinear().domain([-1986, 199.99998]).range([0, 1])
-						  };
-
-		var fun5_scales = {"x":d3.scaleLinear().domain([-1.9, 1.9]).range([-1.5, 1.5]),
-						   "y":d3.scaleLinear().domain([-1.1, 1.1]).range([-1.5, 1.5]),
-						   "z":d3.scaleLinear().domain([-5.86095, 1.031627]).range([0, 1.01])
-						  };
-
-	    var fun6_scales = {"x":d3.scaleLinear().domain([-10, 10]).range([-1.5, 1.5]),
-						   "y":d3.scaleLinear().domain([-10, 10]).range([-1.5, 1.5]),
-						   "z":d3.scaleLinear().domain([-210.27662470796076, 186.615794955561]).range([0, 1.01])
-						  };
-
-	    var fun7_scales = {"x":d3.scaleLinear().domain([.25, 10]).range([-1.5, 1.5]),
-						   "y":d3.scaleLinear().domain([.25, 10]).range([-1.5, 1.5]),
-						   "z":d3.scaleLinear().domain([-.9999982330513699, 0.999999972963692]).range([0, 1.01])
-						  };
-
-	    var fun10_scales = {"x":d3.scaleLinear().domain([0, 1]).range([-1.5, 1.5]),
-						    "y":d3.scaleLinear().domain([0, 1]).range([-1.5, 1.5]),
-						    "z":d3.scaleLinear().domain([-38.0, -2.0004450187892893]).range([0, 1.01])
-						  };
-
-	    var fun11_scales = {"x":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
-						    "y":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
-						    "z":d3.scaleLinear().domain([-2171.198973635492, -0.002367801442371835]).range([0, 1.01])
-						  };
-
-	    var fun12_scales = {"x":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
-						    "y":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
-						    "z":d3.scaleLinear().domain([-2049.851816104665, -0.016231402532577894]).range([0, 1.01])
-						  };
-
-	    var fun13_scales = {"x":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
-						    "y":d3.scaleLinear().domain([-5, 5]).range([-1.5, 1.5]),
-						    "z":d3.scaleLinear().domain([-3636.8380518041745, -0.0015356224293130573]).range([0, 1.01])
-						  };
-
-
-		var x_scale = fun5_scales.x;
-		var y_scale = fun5_scales.y;
-		var z_scale = fun5_scales.z;
-
-		var problem_map = {4:0, 5:1, 6:2, 12:6};
-</script>
-
-	<script type="text/javascript">
-		function handleClick(fun_num){
-			
-			//document.getElementById('basemapEl').setAttribute('src', '#png'+region);
-		} // handleClick()
-	</script>
-
-	<link href="libraries/open-iconic-master/font/css/open-iconic-bootstrap.css" rel="stylesheet">
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+	<!-- Load icons -->
+	<link href="css/open-iconic-master/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+	<!-- This is just for the fancy github button in the FAQ -->
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
 
 </head>
 <body>
-	<a href="https://github.com/emilydolson/fitness_landscape_visualizations" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></a>
-	
 
+	<script src=main.js></script>
+	
+	<!-- Github callout from https://github.com/tholman/github-corners -->
+	<svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+		<a href="https://github.com/emilydolson/fitness_landscape_visualizations" class="github-corner" aria-label="View source on Github">
+			<path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+			<path style="fill:white;" d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+			<path style="fill:white;" d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" class="octo-body"></path>
+		</a>
+	</svg>
+
+	<!-- Make header -->
+	<div id="banner" class="jumbotron">
+
+		<div class="container-fluid">			
+			<div class="row justify-content-between">
+				<!-- Title -->
+				<div class="col">
+					<h1>Visualizing evolutionary history with WebVR </h1>
+				</div>
+				<!-- Action buttons -->
+				<div class="col-auto">
+					<div class="row justify-content-end">
+						<div class="col">
+							<!-- Settings button -->
+							<button class="btn btn-light btn-lg float-right" data-toggle="collapse" href="#settings_container" role="button" aria-expanded="false" aria-controls="settings_container" alt="Settings. Click here to choose some data to draw!">
+								<span title="Settings" aria-hidden="true" class="oi oi-cog align-middle"></span>
+							</button>
+						</div>
+
+						<div class="col">
+							<!-- View visualization button -->
+							<button class="btn btn-light btn-lg float-right"  onclick="document.getElementById('scene').scrollIntoView();" role="button" aria-expanded="false" aria-controls="view visualization" alt="Center on visualization">
+								<span title="More information" aria-hidden="true" class="oi oi-eye align-middle"></span>
+							</button>	
+						</div>
+
+						<div class="col">
+							<!-- Bring up FAQ button -->
+							<button class="btn btn-light btn-lg float-right" data-toggle="modal" data-target="#help" role="button" aria-expanded="false" aria-controls="help" alt="Need help? Have more questions?">
+								<span title="More information" aria-hidden="true" class="oi oi-question-mark align-middle"></span>
+							</button>	
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Page dsecription -->
+		<p>
+			<br>
+			To try out this demo, click the settings button (to the right with the gear symbol) and select some data to draw.
+			If you have a compatible device, you can display this visualization in virtual reality by scrolling down (or clicking on the button to the right with the eye icon) and clicking the grey goggles button.
+			In a standard web browser this button will open a full-screen version of the data visualization. However this view has a more limited range of interaction options, so I recommend just clicking the eye button 
+			to center the visualization in your web browser.
+			Have fun! If you have questions or just want to talk about data visualization in VR, feel free to <a href="http://emilyldolson.com/contact.html">contact me</a>!
+		</p>
+
+		<!-- Settings container -->
+		<div class="container">
+			<div class="row"><h2> </h2></div>
+			<div class="row"><h2> </h2></div>
+			<div class="container collapse" id="settings_container">
+				<div id="settings_card" class="card">
+					<div class="card-body">
+
+						<h3 class="card-title" data-toggle="tooltip" data-placement="bottom"
+						title="It's easiest to interpret these visualizations if you look at data from a single experimental treatment at a time. This control panel lets you select experimental treatments to view, and options for how you want the data displayed.">
+							Settings
+						</h3>	
+
+						<div class="row align-items-center">
+							<div class="col">
+									<h5>Data selection</h5>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend" data-toggle="tooltip" data-placement="left"
+									title="Which of the four fitness functions do you want to view data from?">
+										<label class="input-group-text" for="problem"> Fitness landscape: </label>
+									</div>
+									<select id="problem" class="custom-select" name="problem">
+										<option value="4">Himmelblau</option>
+										<option value="5" selected>Six-Hump Camel Back</option>
+										<option value="6">Shubert 2D</option>
+										<option value="12">Composition Function 2</option>
+									</select>
+								</div>
+
+			
+								<div class="input-group mb-3" >
+									<div class="input-group-prepend" data-toggle="tooltip" data-placement="left"
+									title="The way individuals are selected to reproduce has a huge impact on long-term evolutionary dynamics. Choose a selection scheme to view data from.">
+										<label class="input-group-text" for="selection"> Selection scheme: </label>
+									</div>
+									<select id="selection" class="custom-select" name="selection">
+										<option value="0">Tournament</option>
+										<!-- <option value="1">Lexicase</option> -->
+										<option value="2">Eco-EA</option>
+										<option value="4">Roulette</option>
+										<option value="5">Drift</option>
+									</select>
+								</div>
+
+								<div class="input-group mb-3" >
+									<div class="input-group-prepend" data-toggle="tooltip" data-placement="left"
+									title="Mutations to x and y coordinates are chosen from a normal distribution. This number, scaled by the x and y domains of the function, determines the standard deviation of that function.">
+										<label class="input-group-text" for="mut_rate"> Mutation rate: </label>
+									</div>
+									<select id="mut_rate" class="custom-select" name="mut_rate">
+										<option value="0.1">0.1</option>
+										<option value="0.01">0.01</option>
+										<option value="0.001">0.001</option>
+										<option value="0.0001">0.0001</option>
+										<!-- <option value="0.00001">0.00001</option> -->
+										<!-- <option value="0.000001">0.000001</option> -->						
+									</select>
+								</div>
+
+								<div class="input-group mb-3" >
+									<div class="input-group-prepend" data-toggle="tooltip" data-placement="left"
+									title="In tournament selection, a number of individuals are randomly chosen from the population and the one with the highest fitness reproduces. This variable determines the number of individuals in these groups.">
+											<label class="input-group-text" for="tour_size"> Tournament size: </label>
+									</div>
+									<select id="tour_size" class="custom-select" name="tour_size">
+										<option value="2">2</option>
+										<option value="4">4</option>
+										<option value="8">8</option>
+										<option value="16">16</option>	
+									</select>
+								</div>														
+
+								<div class="input-group mb-3 form-check form-check-inline">
+									<label class="form-check-label" for="elite_checkbox"  data-toggle="tooltip" data-placement="left"
+									title="We ran some experiments with a single round of elite selection in addition to the specific selection scheme (i.e. the best solution is always added to the next generation). If checked, data from those runs will be displayed"> Elite selection?&nbsp; </label>
+									<input type="checkbox" class="form-check-input" id="elite_checkbox" name="elite_checkbox">
+								</div>
+	
+							</div> <!-- Closes column -->
+
+							<div class="col">
+								<h5>Visualization options</h5>
+								<div class="input-group mb-3 form-check form-check-inline" >
+									<label class="form-check-label" for="lines_checkbox" data-toggle="tooltip" data-placement="left"
+									title="Do you want to draw paths representing the complete history of lineages? (can get messy)"> Draw lineage paths? &nbsp; </label>
+									<input type="checkbox" class="form-check-input" id="lines_checkbox" name="lines_checkbox">
+								</div>
+
+								<div class="input-group mb-3 form-check form-check-inline" >
+									<label class="form-check-label" for="starts_checkbox" data-toggle="tooltip" data-placement="left"
+									title="Draw white spheres on the landscape indicating the location of the earliest ancestor of each lineage."> Draw start points?&nbsp; </label>
+									<input type="checkbox" class="form-check-input" id="starts_checkbox" name="starts_checkbox">
+								</div>
+
+								<div class="input-group mb-3 form-check form-check-inline">
+									<label class="form-check-label" for="ends_checkbox" data-toggle="tooltip" data-placement="left"
+									title="Draw black spheres on the landscape indicating, for each lineage, the location of the last organism from that lineage."> Draw end points?&nbsp; </label>
+									<input type="checkbox" class="form-check-input" id="ends_checkbox" name="ends_checkbox">
+								</div>
+
+								<div class="input-group mb-3">
+									<div class="input-group-prepend" data-toggle="tooltip" data-placement="left"
+									title="Each condition has 10 replicates. You may or may not want to view them all at the same time. Select the number you want to see from this drop-down.">
+										<label class="input-group-text" for="n_lineages"> Number of lineage paths to draw: </label>
+									</div>
+									<select id="n_lineages" class="custom-select" name="n_lineages">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>					
+									</select>
+								</div>
+	
+								<label data-toggle="tooltip" for="z_slider" data-placement="bottom"
+								title="We can distinguish lineages from each other by separating them along the z axis. This slider indicates how much to separate them">
+											   Z separation: 
+								</label>
+								<input id="z_slider" type="range" min="0" max=".25" step="0.0001" value=".01">
+
+
+								<!-- <label> Epsilon:
+									<select id="epsilon", name="epsilon">
+										<option value="0">0</option>
+										<option value="0.01">0.01</option>
+										<option value="1e-09">1e-09</option>
+										<option value="1e-12">1e-12</option>
+									</select>
+								</label> -->
+
+							</div> <!-- Closes column -->
+
+							<div class="col center">
+								<button type="button" class="btn btn-primary btn-lg" onclick="load_data()" data-toggle="tooltip" data-placement="top"
+								title="Click to draw the data you've specified! You need to click this button every time you want to update what's being shown, because rendering takes a few seconds.">
+									<span class="oi oi-brush"></span><br>Draw
+								</button>
+							</div> <!-- Closes column -->								
+						</div> <!-- Close row -->
+					</div> <!-- Close card body -->
+				</div> <!-- Close card -->
+			</div> <!-- Close collapsible container -->
+		</div> <!-- Close container -->
+	</div> <!-- Close jumbotron -->
+
+	<!-- Make the scene that contains the actual data visualization -->
+	<a-scene id="scene" embedded camera-transform-controls="">
+
+		<!-- Pre-load the fitness landscapes -->
+		<a-assets>
+			<img id="fun4" src="data/fun_4.jpg"/>
+			<img id="fun5" src="data/fun_5.jpg"/>
+			<img id="fun6" src="data/fun_6.jpg"/>
+			<img id="fun7" src="data/fun_7.jpg"/>
+			<img id="fun10" src="data/fun_10.jpg"/>
+			<img id="fun11" src="data/fun_11.jpg"/>
+			<img id="fun12" src="data/fun_12.jpg"/>
+			<img id="fun13" src="data/fun_13.jpg"/>
+		</a-assets>
+
+		<!-- Make the finess landscape -->
+		<a-entity	
+			id="middle"
+			aframe-heatmap3d="
+			src: #fun5;
+			srcMobile: #fun5;
+			ignoreZeroValues:false; 
+			invertElevation:true;
+			palette:parula;
+			metalness:.5;
+			roughness:0;
+			stackBlurRadius:1;		
+			stretch:true;
+			flipPalette:false; 
+			renderMode: surface;
+			scaleOpacity: false;
+			scaleOpacityMethod:log2;
+			opacityMin: 0.99; 
+			width: 3; height: 3;" scale="1 1 1">
+		</a-entity>		
+
+		<!-- Give camera something to focus on -->
+		<a-entity
+			id="target"
+			geometry="primitive: box"
+			position="0 0 0"
+			material="visible:false">
+		</a-entity>
+
+		<!-- In the future, it might be nice to make lighting adjustable -->
+		<a-entity light="type: directional; target: middle; color: #FFF; intensity: 0.5" position="2 4 5"></a-entity>
+		<a-entity light="intensity: 2; distance: 1; angle: 90; target: middle; type:directional" position="5 5 3"></a-entity>
+
+		<!-- Handle all of the cameras for different ways of viewing the visualization -->
+		<a-entity id="cameraRig">
+            <!-- camera -->
+			<a-entity
+			camera="active:true;"
+			id="camera_orbit"
+			position="0 1 3"
+			look-controls="pointerLockEnabled:false"
+			wasd-controls="fly:true"
+			orbit-controls="
+			autoRotate: false;
+			target: #target;
+			enableDamping: true;
+			dampingFactor: 0.125;
+			rotateSpeed:0.15;
+			zoomSpeed:0.5;
+			maxPolarAngle:1.85;">
+			</a-entity>
+            <a-entity id="lefthand" camera-transform-controls-hand="hand:left" vive-controls="hand: left" oculus-touch-controls="hand: left" windows-motion-controls="hand: left"></a-entity>
+            <a-entity id="righthand" camera-transform-controls-hand="hand:right" vive-controls="hand: right" oculus-touch-controls="hand: right" windows-motion-controls="hand: right"></a-entity>
+        </a-entity>
+	</a-scene>
+
+	<!-- The AFrame scene can capture your mouse, so it's nice to have a scroll to top button -->
+	<a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left"><span class="oi oi-chevron-top"></span></a>
+
+	<!-- The modal containing the FAQ (this could go anywhere) -->
 	<div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
-			<div class="modal-header">
-				<h2 class="modal-title" id="exampleModalLongTitle">FAQ</h2>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
+				<div class="modal-header">
+					<h2 class="modal-title" id="exampleModalLongTitle">FAQ</h2>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
 					<h4> What is this showing? </h4>
 					<p>
 					This will all make a lot more sense if you read one of the associated papers (pre-prints forthcoming),
@@ -210,427 +435,14 @@
 					</p>
 	
 				</div>
-			<div class="modal-footer">
+				<div class="modal-footer">
 					<a href="https://twitter.com/emilyldolson" class="twitter-follow-button" data-show-count="false">Follow me on Twitter!</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> </li>
 					<a class="github-button" href="https://github.com/emilydolson" data-style="mega" aria-label="My Github">My Github</a> </li>
-		
-			</div>
+				</div>
 			</div>
 		</div>
-		</div>
+	</div>
 
-	<div id="banner" class = "jumbotron" style="padding-bottom:10px;background: #000000;">
-		<h1 style="color:#FFF">Visualizing evolutionary history with WebVR <a>
-			<a class="btn btn-success btn-lg float-right" data-toggle="modal" style="margin-right:20px;" data-target="#help" role="button" aria-expanded="false" aria-controls="help">
-				<span  data-toggle="tooltip" data-placement="left"
-				title="Need help? Have more questions?" class="oi oi-question-mark"></span>
-			</a>	
-		
-			<a class="btn btn-light btn-lg float-right" style="margin-right:20px;" data-toggle="collapse" href="#settings_container" role="button" aria-expanded="false" aria-controls="settings_container">
-				<span  data-toggle="tooltip" data-placement="left"
-				title="Settings. Click here to choose some data to draw!" class="oi oi-cog"></span>
-			</a>
-		</h1>
-
-		<p style="color:#FFF">
-			<br>
-			To try out this demo, click the settings button (the one to the right with the gear symbol) and select some data to draw.
-			If you have a compatible device, you can display this visualization in virtual reality by scrolling down and clicking the grey goggles button. In a standard 
-			web browser this will open a full-screen version of the data visualization, however it will have a more limited range of interaction options.
-			Have fun! If you have questions or just want to talk about data visualization in VR, feel free to <a href="http://emilyldolson.com/contact.html">contact me</a>!
-		</p>
-
-		<div class="container">
-			<div class="row"><h2> </h2></div>
-			<div class="row"><h2> </h2></div>
-			<div class="container collapse" id="settings_container">
-				<div class="card" style="background:#FFF">
-					<div class="card-body">
-
-						<h3 class="card-title" style="width:50%" data-toggle="tooltip" data-placement="bottom"
-						title="It's easiest to interpret these visualizations if you look at data from a single experimental treatment at a time. This control panel lets you select experimental treatments to view, and options for how you want the data displayed.">
-							Settings
-						</h3>	
-
-						<div class="row align-items-center">
-							<div class="col-5">
-								<div class="input-group mb-3" data-toggle="tooltip" data-placement="left"
-								title="Which of the four fitness functions do you want to view data from?">
-									<div class="input-group-prepend">
-										<label class="input-group-text" for="problem"> Fitness landscape: </label>
-									</div>
-									<select id="problem" class="custom-select" name="problem">
-										<option value="4">Himmelblau</option>
-										<option value="5" selected>Six-Hump Camel Back</option>
-										<option value="6">Shubert 2D</option>
-										<option value="12">Composition Function 2</option>
-									</select>
-								</div>
-
-								<div class="input-group mb-3" data-toggle="tooltip" data-placement="left"
-								title="Each condition has 10 replicates. You may or may not want to view them all at the same time. Select the number you want to see from this drop-down.">
-									<div class="input-group-prepend">
-										<label class="input-group-text" for="n_lineages"> Number of lineage paths to draw: </label>
-									</div>
-									<select id="n_lineages" class="custom-select" name="n_lineages">
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="6">6</option>
-										<option value="7">7</option>
-										<option value="8">8</option>
-										<option value="9">9</option>
-										<option value="10">10</option>					
-									</select>
-								</div>
-			
-								<div class="input-group mb-3" data-toggle="tooltip" data-placement="left"
-								title="The way individuals are selected to reproduce has a huge impact on long-term evolutionary dynamics. Choose a selection scheme to view data from.">
-									<div class="input-group-prepend">
-										<label class="input-group-text" for="selection"> Selection scheme: </label>
-									</div>
-									<select id="selection" class="custom-select" name="selection">
-										<option value="0">Tournament</option>
-										<!-- <option value="1">Lexicase</option> -->
-										<option value="2">Eco-EA</option>
-										<option value="4">Roulette</option>
-										<option value="5">Drift</option>
-									</select>
-								</div>
-
-								<div class="input-group mb-3" data-toggle="tooltip" data-placement="left"
-								title="Mutations to x and y coordinates are chosen from a normal distribution. This number, scaled by the x and y domains of the function, determines the standard deviation of that function.">
-									<div class="input-group-prepend">
-										<label class="input-group-text" for="mut_rate"> Mutation rate: </label>
-									</div>
-									<select id="mut_rate" class="custom-select" name="mut_rate">
-										<option value="0.1">0.1</option>
-										<option value="0.01">0.01</option>
-										<option value="0.001">0.001</option>
-										<option value="0.0001">0.0001</option>
-										<!-- <option value="0.00001">0.00001</option> -->
-										<!-- <option value="0.000001">0.000001</option> -->						
-									</select>
-								</div>
-
-								<div class="input-group mb-3" data-toggle="tooltip" data-placement="left"
-								title="In tournament selection, a number of individuals are randomly chosen from the population and the one with the highest fitness reproduces. This variable determines the number of individuals in these groups.">
-									<div class="input-group-prepend">
-											<label class="input-group-text" for="tour_size"> Tournament size: </label>
-									</div>
-									<select id="tour_size" class="custom-select" name="tour_size">
-										<option value="2">2</option>
-										<option value="4">4</option>
-										<option value="8">8</option>
-										<option value="16">16</option>	
-									</select>
-								</div>														
-
-							</div> <!-- Closes column -->
-
-							<div class="col-5">
-
-								<div class="input-group mb-3 form-check form-check-inline" data-toggle="tooltip" data-placement="left"
-								title="Do you want to draw paths representing the complete history of lineages? (can get messy)">
-									<label class="form-check-label" for="lines_checkbox"> Draw lineage paths? &nbsp; </label>
-									<input type="checkbox" class="form-check-input" id="lines_checkbox" name="lines_checkbox">
-								</div>
-
-								<div class="input-group mb-3 form-check form-check-inline" data-toggle="tooltip" data-placement="left"
-								title="Draw white spheres on the landscape indicating the location of the earliest ancestor of each lineage.">
-									<label class="form-check-label" for="starts_checkbox"> Draw start point spheres? &nbsp; </label>
-									<input type="checkbox" class="form-check-input" id="starts_checkbox" name="starts_checkbox">
-								</div>
-
-								<div class="input-group mb-3 form-check form-check-inline"data-toggle="tooltip" data-placement="left"
-								title="Draw black spheres on the landscape indicating, for each lineage, the location of the last organism from that lineage.">
-									<label class="form-check-label" for="ends_checkbox"> Draw end point spheres? &nbsp; </label>
-									<input type="checkbox" class="form-check-input" id="ends_checkbox" name="ends_checkbox">
-								</div>
-
-								<div class="input-group mb-3 form-check form-check-inline" data-toggle="tooltip" data-placement="left"
-								title="We ran some experiments with a single round of elite selection in addition to the specific selection scheme (i.e. the best solution is always added to the next generation). If checked, data from those runs will be displayed">
-									<label class="form-check-label" for="elite_checkbox"> Elite selection? &nbsp; </label>
-									<input type="checkbox" class="form-check-input" id="elite_checkbox" name="elite_checkbox">
-								</div>
-
-								<label data-toggle="tooltip" data-placement="bottom"
-								title="We can distinguish lineages from each other by separating them along the z axis. This slider indicates how much to separate them">
-									   		Z separation:
-									<input id="z_slider" type="range" min="0" max=".25" step="0.0001" value=".01">
-								</label>
-
-								<!-- <label> Epsilon:
-									<select id="epsilon", name="epsilon">
-										<option value="0">0</option>
-										<option value="0.01">0.01</option>
-										<option value="1e-09">1e-09</option>
-										<option value="1e-12">1e-12</option>
-									</select>
-								</label> -->
-
-							</div> <!-- Closes column -->
-
-							<div class="col-2">
-								<button type="button" class="btn btn-primary btn-lg" onclick="load_data()" data-toggle="tooltip" data-placement="top"
-								title="Click to draw the data you've specified! You need to click this button every time you want to update what's being shown, because rendering takes a few seconds.">
-									<span class="oi oi-brush"></span><br>Draw
-								</button>
-							</div> <!-- Closes column -->								
-						</div> <!-- Close row -->
-					</div> <!-- Close card body -->
-				</div> <!-- Close card -->
-			</div> <!-- Close collapsible container -->
-		</div> <!-- Close container -->
-	</div> <!-- Close jumbotron -->
-
-
-	<script type="text/javascript">
-		document.addEventListener('DOMContentLoaded',function() {
-			$(function () {
-				$('[data-toggle="tooltip"]').tooltip()
-			})
-			document.querySelector('select[name="problem"]').onchange=problemChangeEventHandler;	
-		},false);
-
-		function problemChangeEventHandler(event) {
-			
-			if(!event.target.value) return;
-			else {
-				console.log('Switch to '+event.target.value);
-				document.getElementById('middle').setAttribute('aframe-heatmap3d', {
-					src: '#fun' + event.target.value, srcMobile: '#fun' + event.target.value});
-				d3.select('#basemapEl').transition().attr('src','#fun'+event.target.value);
-				x_scale = window["fun"+event.target.value+"_scales"].x
-				y_scale = window["fun"+event.target.value+"_scales"].y
-				z_scale = window["fun"+event.target.value+"_scales"].z
-				load_data();
-			} 
-		}
-
-		function load_data() {
-			// console.log("loading data");
-			z_scale.range([0,1.01]);
-			var lines = document.querySelectorAll("[dataline]");
-			for (var i = 0; i < lines.length; i++) {
-				lines[i].parentNode.removeChild(lines[i]);
-			}
-
-			var spheres = document.querySelectorAll("a-sphere");
-			for (var i = 0; i < spheres.length; i++) {
-				spheres[i].parentNode.removeChild(spheres[i]);
-			}
-
-			var selection = document.querySelector('select[name="selection"]').value;
-			var problem = problem_map[document.querySelector('select[name="problem"]').value];
-
-			d3.csv("data/P"+problem+"S"+selection+".csv", function(error, data) {
-				if (error){
-					throw error;
-				}
-				console.log("loaded data");
-				// var epsilon = document.querySelector('select[name="epsilon"]').value;
-				var tour_size = document.querySelector('select[name="tour_size"]').value;
-				var mut_rate = document.querySelector('select[name="mut_rate"]').value;
-				var elite = document.querySelector('#elite_checkbox').checked;
-				var n_lineages = +document.querySelector('#n_lineages').value;
-				// console.log(tour_size, mut_rate, selection, problem);
-				var i = 0;
-				// var seeds = [];
-				for (line of data){
-					// console.log(line);
-					if (line.SELECTION_METHOD == selection && 
-					(line.TOURNAMENT_SIZE == tour_size || selection != "0") &&
-					// (line.LEXICASE_EPSILON == epsilon || selection != "1") &&
-					line.MUTATION_STD == mut_rate && line.PROBLEM == problem &&
-					(line.ELITE_SELECT__ELITE_CNT == +elite)) {
-							// if (i==1) {
-							// console.log(line.RANDOM_SEED);
-							// if (!seeds.includes(line.RANDOM_SEED)) {
-								// console.log(seeds);
-								// console.log("drawing");
-								draw_lineage(line.path);
-								// seeds.push(line.RANDOM_SEED);
-								i++;
-								if (i >= n_lineages) {
-									break;
-								}
-							// }
-
-							
-							
-					}
-				}
-
-			});				
-		}
-
-	</script>
-
-
-
-	<a-scene id="scene" embedded camera-transform-controls="" style="height: 80%;">
-
-		<a-assets>
-			<img id="fun4" src="data/fun_4.jpg"  style="display:none"/>
-			<img id="fun5" src="data/fun_5.jpg"  style="display:none"/>
-			<img id="fun6" src="data/fun_6.jpg"  style="display:none"/>
-			<img id="fun7" src="data/fun_7.jpg"  style="display:none"/>
-			<img id="fun10" src="data/fun_10.jpg"  style="display:none"/>
-			<img id="fun11" src="data/fun_11.jpg"  style="display:none"/>
-			<img id="fun12" src="data/fun_12.jpg"  style="display:none"/>
-			<img id="fun13" src="data/fun_13.jpg"  style="display:none"/>
-
-		</a-assets>
-
-		<a-entity	
-		id="middle"
-		aframe-heatmap3d="
-		src: #fun5;
-		srcMobile: #fun5;
-		ignoreZeroValues:false; 
-		invertElevation:true;
-		palette:parula;
-		metalness:.5;
-		roughness:0;
-		stackBlurRadius:1;		
-		stretch:true;
-		flipPalette:false; 
-		renderMode: surface;
-		scaleOpacity: false;
-		scaleOpacityMethod:log2;
-		opacityMin: 0.99; 
-		 width: 3; height: 3;" scale="1 1 1">
-		</a-entity>		
-
-		<a-entity
-			id="target"
-			geometry="primitive: box"
-			position="0 0 0"
-			material="visible:false">
-
-		</a-entity>
-
-		<!-- Default lighting injected by A-Frame. -		-->
-		<!-- <a-entity light="type: ambient; color: #fff"></a-entity> -->
-
-		<a-entity light="type: directional; target: middle; color: #FFF; intensity: 0.5" position="2 4 5"></a-entity>
-		<a-entity light="intensity: 2; distance: 1; angle: 90; target: middle; type:directional" position="5 5 3"></a-entity>
-
-        <a-entity id="cameraRig">
-            <!-- camera -->
-			<a-entity
-			camera="active:true;"
-			id="camera_orbit"
-			position="0 1 3"
-			look-controls="pointerLockEnabled:false"
-			wasd-controls="fly:true"
-			orbit-controls="
-			autoRotate: false;
-			target: #target;
-			enableDamping: true;
-			dampingFactor: 0.125;
-			rotateSpeed:0.15;
-			zoomSpeed:0.5;
-			maxPolarAngle:1.85;">
-			</a-entity>
-            <a-entity id="lefthand" camera-transform-controls-hand="hand:left" vive-controls="hand: left" oculus-touch-controls="hand: left" windows-motion-controls="hand: left"></a-entity>
-            <a-entity id="righthand" camera-transform-controls-hand="hand:right" vive-controls="hand: right" oculus-touch-controls="hand: right" windows-motion-controls="hand: right"></a-entity>
-        </a-entity>
-
-		<!-- <a-entity id="lines">
-
-		</a-entity> -->
-		<!-- <a-entity dataline = "path:-.5 -.5 -4, .5 .5 1, .5 -.5 0;" ></a-entity> -->
-		<script>
-
-			var draw_lineage = function(data){
-					// var scene = d3.select("#scene");
-					// scene.selectAll("a-entity")
-					// console.log("logging data", data);
-					// var ssv = d3.dsvFormat(" ");
-		
-					// var points = data.split(",");
-					// // console.log("ponts:", points);
-					// // points = points.map(ssv.parse);
-					// // console.log("ponts:", points, ssv.parse);
-					// points = points.map(x => {
-					// 	x = x.split(" "); 
-					// 	return [x_scale(x[0]), z_scale(x[2]), y_scale(x[1])];
-					// });
-		
-					
-					// data_to_bind = [];
-					// for (var i = 0; i < points.length-1; i++) {
-					// 	// var v = ssv.parse(points[i]);
-					// 	data_to_bind.push({"start": points[i], "end":points[i+1], "color": d3.hsl(0, 0, i/data_to_bind.length)});
-					// }
-					// // console.log(data_to_bind);
-					var sceneEl = document.querySelector('a-scene');
-
-					if (document.querySelector('#starts_checkbox').checked) {
-						var startSphereEl = document.createElement('a-sphere');
-						var startpos = data.slice(data.lastIndexOf(",")+1, data.length).split(" ");
-						startpos[0] = x_scale(startpos[0]);
-						var y = y_scale(startpos[1]);
-						var z = z_scale(startpos[2]);
-						startpos[1] = z;
-						startpos[2] = y;
-
-						startSphereEl.setAttribute("position", startpos.join(" "));
-						startSphereEl.setAttribute("radius", .01);
-						sceneEl.appendChild(startSphereEl);
-					}
-
-					if (document.querySelector('#ends_checkbox').checked) {
-						var endSphereEl = document.createElement('a-sphere');
-						var endpos = data.slice(0,data.indexOf(",")).split(" ");
-
-						endpos[0] = x_scale(endpos[0]);
-						y = y_scale(endpos[1]);
-						z = z_scale(endpos[2]);
-						endpos[1] = z;
-						endpos[2] = y;
-
-						endSphereEl.setAttribute("position", endpos.join(" "));
-						endSphereEl.setAttribute("radius", .01);
-						endSphereEl.setAttribute("material", "color", "black");
-						sceneEl.appendChild(endSphereEl);
-					}
-					// console.log(data)
-					if (document.querySelector('#lines_checkbox').checked) {
-						var lineEl = document.createElement('a-entity');
-						lineEl.setAttribute("dataline", {"path": data, "z_increment":document.querySelector('#z_slider').value});
-						sceneEl.appendChild(lineEl);
-					}
-
-					// lineEl.setAttribute("dataline", "z_increment", .1);
-
-					// for (var i = 0; i < 1023; i++) {
-					// 	// console.log(i, data_to_bind[i]);
-					// 	// entityEl.setAttribute("line__"+i, "start", "0, 0, 0");
-					// 	entityEl.setAttribute("line__"+i.toString(), data_to_bind[i]);
-
-					// }
-					
-
-
-					// d3.select("#lines").append("a-entity")
-					// 				   .selectAll("a-entity")
-					// 				   .data(data_to_bind)
-					// 				   .enter()
-					// 				   .append("a-entity")
-					// 				   .attr("line", function(d,i){return "start: " + d.start.join(", ") + "; end: " + d.end.join(", ")+"; color: "+d3.hsl(0, 0, i/data_to_bind.length);});
-									//    .attr("meshline", "lineWidth:10; color:red; path:"+ data);
-			};
-
-			load_data();		
-		</script>
-
-	</a-scene>
-		
 </body>
 
 </html>

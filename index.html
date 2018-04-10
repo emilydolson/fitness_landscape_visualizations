@@ -264,16 +264,14 @@
 				<div class="col-auto">
 					<div class="row justify-content-end">
 						<div class="col">
-							<button class="btn btn-light btn-lg float-right" style="height:45px;width:50px;" data-toggle="collapse" href="#settings_container" role="button" aria-expanded="false" aria-controls="settings_container">
-								<span  data-toggle="tooltip" data-placement="left"
-								title="Settings. Click here to choose some data to draw!" style="padding-top:2px;vertical-align: middle;" title="Settings" aria-hidden="true" class="oi oi-cog align-middle"></span>
+							<button class="btn btn-light btn-lg float-right" style="height:45px;width:50px;" data-toggle="collapse" href="#settings_container" role="button" aria-expanded="false" aria-controls="settings_container" alt="Settings. Click here to choose some data to draw!">
+								<span style="vertical-align: middle;" title="Settings" aria-hidden="true" class="oi oi-cog align-middle"></span>
 							</button>
 						</div>
 
 						<div class="col">
-							<button class="btn btn-light btn-lg float-right" data-toggle="modal" style="height:45px;width:50px;"  data-target="#help" role="button" aria-expanded="false" aria-controls="help">
-								<span  data-toggle="tooltip" data-placement="left"
-								title="Need help? Have more questions?" style="vertical-align: middle;" title="More information" aria-hidden="true" class="oi oi-question-mark align-middle"></span>
+							<button class="btn btn-light btn-lg float-right" data-toggle="modal" style="height:45px;width:50px;"  data-target="#help" role="button" aria-expanded="false" aria-controls="help" alt="Need help? Have more questions?">
+								<span style="vertical-align: middle;" title="More information" aria-hidden="true" class="oi oi-question-mark align-middle"></span>
 							</button>	
 						</div>
 					</div>
@@ -382,35 +380,36 @@
 
 							<div class="col">
 
-								<div class="input-group mb-3 form-check form-check-inline" data-toggle="tooltip" data-placement="left"
-								title="Do you want to draw paths representing the complete history of lineages? (can get messy)">
-									<label class="form-check-label" for="lines_checkbox"> Draw lineage paths? &nbsp; </label>
+								<div class="input-group mb-3 form-check form-check-inline" >
+									<label class="form-check-label" for="lines_checkbox" data-toggle="tooltip" data-placement="left"
+									title="Do you want to draw paths representing the complete history of lineages? (can get messy)"> Draw lineage paths? &nbsp; </label>
 									<input type="checkbox" class="form-check-input" id="lines_checkbox" name="lines_checkbox">
 								</div>
 
-								<div class="input-group mb-3 form-check form-check-inline" data-toggle="tooltip" data-placement="left"
-								title="Draw white spheres on the landscape indicating the location of the earliest ancestor of each lineage.">
-									<label class="form-check-label" for="starts_checkbox"> Draw start points?&nbsp; </label>
+								<div class="input-group mb-3 form-check form-check-inline" >
+									<label class="form-check-label" for="starts_checkbox" data-toggle="tooltip" data-placement="left"
+									title="Draw white spheres on the landscape indicating the location of the earliest ancestor of each lineage."> Draw start points?&nbsp; </label>
 									<input type="checkbox" class="form-check-input" id="starts_checkbox" name="starts_checkbox">
 								</div>
 
-								<div class="input-group mb-3 form-check form-check-inline"data-toggle="tooltip" data-placement="left"
-								title="Draw black spheres on the landscape indicating, for each lineage, the location of the last organism from that lineage.">
-									<label class="form-check-label" for="ends_checkbox"> Draw end points?&nbsp; </label>
+								<div class="input-group mb-3 form-check form-check-inline">
+									<label class="form-check-label" for="ends_checkbox" data-toggle="tooltip" data-placement="left"
+									title="Draw black spheres on the landscape indicating, for each lineage, the location of the last organism from that lineage."> Draw end points?&nbsp; </label>
 									<input type="checkbox" class="form-check-input" id="ends_checkbox" name="ends_checkbox">
 								</div>
 
-								<div class="input-group mb-3 form-check form-check-inline" data-toggle="tooltip" data-placement="left"
-								title="We ran some experiments with a single round of elite selection in addition to the specific selection scheme (i.e. the best solution is always added to the next generation). If checked, data from those runs will be displayed">
-									<label class="form-check-label" for="elite_checkbox"> Elite selection?&nbsp; </label>
+								<div class="input-group mb-3 form-check form-check-inline">
+									<label class="form-check-label" for="elite_checkbox"  data-toggle="tooltip" data-placement="left"
+									title="We ran some experiments with a single round of elite selection in addition to the specific selection scheme (i.e. the best solution is always added to the next generation). If checked, data from those runs will be displayed"> Elite selection?&nbsp; </label>
 									<input type="checkbox" class="form-check-input" id="elite_checkbox" name="elite_checkbox">
 								</div>
 
-								<label data-toggle="tooltip" data-placement="bottom"
+								<label data-toggle="tooltip" for="z_slider" data-placement="bottom"
 								title="We can distinguish lineages from each other by separating them along the z axis. This slider indicates how much to separate them">
-									   		Z separation:
-									<input id="z_slider" type="range" min="0" max=".25" step="0.0001" value=".01">
+											   Z separation: 
 								</label>
+								<input id="z_slider" type="range" min="0" max=".25" step="0.0001" value=".01">
+
 
 								<!-- <label> Epsilon:
 									<select id="epsilon", name="epsilon">
@@ -439,8 +438,11 @@
 
 	<script type="text/javascript">
 		document.addEventListener('DOMContentLoaded',function() {
+			
 			$(function () {
-				$('[data-toggle="tooltip"]').tooltip()
+				// if(!('ontouchstart' in window)) {
+					$('[data-toggle="tooltip"]').tooltip();
+				// }
 			})
 			document.querySelector('select[name="problem"]').onchange=problemChangeEventHandler;	
 		},false);

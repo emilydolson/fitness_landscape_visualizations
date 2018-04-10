@@ -1,0 +1,54 @@
+/* Black tooltips would blend into the jumbotron */
+.tooltip-arrow,
+.tooltip > .tooltip-inner {background-color: #007bff;}
+
+/* So the header doesn't spill over on mobile */
+h1 {
+    word-wrap:break-word;
+}
+
+#banner {
+    color:#FFF;
+    padding-bottom:10px;
+    background: #000000;
+}
+
+#banner .btn-light {
+    height:45px;width:50px;   
+}
+
+button span {
+    vertical-align: middle;   
+}
+
+#settings_card {
+    background:#FFF;
+    color:#000;
+}
+
+#settings_card h3, #settings_card h5 {
+    text-align:center;
+}
+
+#scene {
+    height: 100%;    
+}
+
+a-assets img {
+    display:none;
+}
+
+/* For scroll to top button */
+.back-to-top {
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display:none;
+}
+
+.center {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}

@@ -344,6 +344,7 @@
 					a large number of runs of evolution in a wide variety of conditions. The settings panel lets you choose subsets to look at.
 					</p>
 
+					<br>
 					<h4> Why is nothing showing up? </h4>
 					<p> Probably because you haven't told it to draw anything! 
 						Go to settings (gear icon), check the boxes for the annotations you want 
@@ -357,6 +358,16 @@
 						experimental.
 					</p>
 					<br>
+
+					<h4> What are some good settings to start with? </h4>
+					<p>
+						Try setting "Selection Scheme" to Eco-EA, "Mutation rate" to .01, and checking the "Draw lineage paths" box. Leave everything else as the default.
+						This should show you a single lineage traversing the landscape. If you want to try looking at multiple lineages, try setting "Number of lineage paths to draw"
+						to 2 and increasing the Z-separation slider about halfway. From there, feel free to change things and see what happens! In general, mutation rates lower than .01
+						tend to stay fixed in a pretty small part of the landscape, and Eco-EA tends to travel farther than other selection schemes.
+					</p>
+					<br>
+
 					<h4> What VR devices are supported? </h4>
 					<p> Check out <a href="https://webvr.rocks">webvr.rocks</a> for more thorough information. In general, most browsers 
 						will at least render it in WebGL. In this mode, you can use your mouse to click and drag to rotate the visualization
@@ -389,8 +400,7 @@
 						that entails being in a part of the landscape where there aren't many other individuals). For more detail, see 
 						<a href="http://ofria.com/pubs/2012GoingsEtAl.pdf">(Goings and Ofria, 2010)</a>.
 						<br><br>
-						Drift: Individuals are selection to reproduce enti
-						rely at random.
+						Drift: Individuals are selected to reproduce entirely at random.
 					</p>
 
 					<h4> Where did these fitness functions come from? </h4>
